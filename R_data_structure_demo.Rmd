@@ -1,0 +1,428 @@
+---
+title: "Untitled"
+author: "Wing-Ho Ko"
+output: html_notebook
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(palmerpenguins)
+```
+
+
+## Prelude: dataframe
+
+Define a simple dataframe
+
+```{r}
+dframe = data.frame(
+  x = c(1, 3, 5),
+  y = c(2.5, 7.1, 3.4),
+  z = c("here", "there", "where")
+)
+```
+
+The class of a dataframe is `data.frame`
+
+```{r}
+class(dframe)
+```
+
+Once unclassed, the dataframe is exposed as a list
+
+```{r}
+class(dframe) <- NULL
+str(dframe)
+```
+
+The elements of the list are columns of the dataframe
+
+```{r}
+dframe$x
+```
+
+## Subsetting and extending vectors and lists
+
+### Subsetting a vector
+
+Define a simple vector
+
+```{r}
+x <- c(-1, 0, 1, 3, 5, 7, 9)
+```
+
+Subset by positive integers:
+
+```{r}
+x[c(2,3,5)]
+```
+
+Subset by negative integers:
+
+```{r}
+x[c(-1, -5)]
+```
+
+Subset by logical vectors:
+
+```{r}
+x[c(TRUE, TRUE, FALSE, FALSE, FALSE, FALSE, TRUE)]
+```
+
+Subset the entire vector
+
+```{r}
+x[]
+```
+
+### Subsetting a list
+
+```{r}
+y <- list(-1, 0, 1, 3, 5, 7, 9)
+```
+
+Subset by positive integers
+
+```{r}
+y[c(5, 7)]
+```
+
+Subset by negative integers
+
+```{r}
+y[c(-2, -4, -6)]
+```
+
+Even with only a single index, the result is a list
+
+```{r}
+y[2]
+```
+
+Use [[]] to extract the inner object
+
+```{r}
+x[[2]]
+```
+
+### Assigning new values to elements of vector and list
+
+```{r}
+x <- c(-1, 0, 1, 3, 5, 7, 9)
+y <- list(-1, 0, 1, 3, 5, 7, 9)
+```
+
+
+Assignment to elements of vector using [] and <-
+
+```{r}
+x[2:3] <- c(15, 17)
+print(x)
+```
+
+Assignment to elements of list using [] and <-
+
+```{r}
+y[2:4] <- c(1, 3, 6)
+print(y)
+```
+
+Assignment to element of list using [[]] and <-
+
+```{r}
+y[[5]] <- c(1, 3, 6)
+print(y)
+```
+
+### Extending a vector
+
+```{r}
+x <- c(1, 2, 3)
+x <- c(x, c(-2, -4, -5), 0)
+print(x)
+```
+
+### Extending a list
+
+```{r}
+x <- list("a", 2L, 7.4)
+```
+
+By default, the second argument of `append()` will be unpacked:
+
+```{r}
+y <- c(3L, 1L, 4L)
+append(x, y)
+```
+
+Avoid unpacking by wrapping `y` inside a list
+
+```{r}
+append(x, list(y))
+```
+
+## Attributes 
+
+```{r}
+dframe = data.frame(
+  x = c(1, 3, 5),
+  y = c(2.5, 7.1, 3.4),
+  z = c("here", "there", "where")
+)
+```
+
+List the attributes of a simple dataframe
+
+```{r}
+attributes(dframe)
+```
+
+Assign a new attribute to the dataframe
+
+```{r}
+attr(dframe, "ref") <- "Unknown"
+```
+
+Check that the attribute is indeed assigned
+
+```{r}
+attributes(dframe)
+```
+
+Check the names and class of the dataframe
+
+```{r}
+names(dframe)
+```
+
+```{r}
+class(dframe)
+```
+
+Turn a dataframe back to the underlying list by removing its class
+
+```{r}
+dframe2 <- dframe
+class(dframe2) <- NULL
+```
+
+```{r}
+dframe2
+```
+
+Perform an ANOVA on the dependence of body mass on species from the penguin dataset
+
+```{r}
+pg_aov <- aov(body_mass_g ~ species, penguins)
+```
+
+The object is of class "aov", which is a subclass of "lm"
+
+```{r}
+class(pg_aov)
+```
+
+The `summary()` call on the aov object is dispatched to `summary.aov()`
+
+```{r}
+summary(pg_aov)
+```
+
+A different summary is printed out if we remove the "aov" string from the class attribute
+
+```{r}
+pg_aov2 <- pg_aov
+class(pg_aov2) <- "lm"
+summary(pg_aov2)
+```
+
+### Named vectors and named lists
+
+Create a named vector by assigning to `names()` after the vector is created
+
+```{r}
+z <- c(1, 3, 7)
+names(z) <- c("a", "b", "c")
+print(z)
+```
+
+Create a named vector using key=value syntax
+
+```{r}
+x <- c(a = 1, b = 3, c = 7)
+print(x)
+```
+
+Create a named list using key=value syntax
+
+```{r}
+y <- list(a=3, b="this", c=3.14)
+print(y)
+```
+
+Subsetting named vector
+
+```{r}
+x[c("a", "c")]
+```
+
+```{r}
+x[]
+```
+
+
+Subsetting a named list
+
+```{r}
+y[["c"]]
+```
+
+Assign an element to y with non-syntactical name
+
+```{r}
+y["1 bad name"] <- 6.2
+```
+
+Extract the element using back-tick
+
+```{r}
+y$`1 bad name`
+```
+
+## Inspecting an object with str()
+
+Construct an `lm` object:
+
+```{r}
+penguin_lm <- lm(body_mass_g ~ flipper_length_mm, penguins)
+```
+
+Inspecting the structure of the lm object
+
+```{r}
+str(penguin_lm)
+```
+
+## Operations on dataframes and matrices
+
+### Subsetting operations on dataframe
+
+```{r}
+dframe = data.frame(
+  x = c(1, 3, 5),
+  y = c(2.5, 7.1, 3.4),
+  z = c("here", "there", "where")
+)
+```
+
+Subsetting using 1-argument form of []:
+
+```{r}
+dframe[c("x", "z")]
+```
+
+Subsetting using 2-argument form of []:
+
+```{r}
+dframe[1:2, ]
+```
+
+Subsetting using 1-argument form of [[]]:
+
+```{r}
+dframe[["z"]]
+```
+
+Subsetting using 2-argument form of [[]]:
+
+```{r}
+dframe[[2, "y"]]
+```
+
+### Extending a dataframe
+
+Adding a new column to a dataframe
+
+```{r}
+dframe <- data.frame(
+  x = 1:5,
+  y = seq(2, 10, 2)
+)
+
+z <- c(-2, -1, 0, 1, 2)
+
+dframe <- cbind(dframe, z)
+dframe
+```
+
+Combining two dataframes row-wise
+
+```{r}
+dframe1 <- data.frame(
+  x = c(1, 2),
+  y = c(2, 4)
+)
+
+dframe2 <- data.frame(
+  y = c(-2, 2),
+  x = c(7, -5)
+)
+
+rbind(dframe1, dframe2)
+```
+
+### Creating a matrix
+
+Creating a matrix
+
+```{r}
+mat0 <- matrix(1:9, nrow=3, ncol=3)
+print(mat0)
+```
+
+Creating the matrix with row-first convention
+
+```{r}
+mat <- matrix(1:9, nrow=3, ncol=3, byrow=TRUE)
+print(mat)
+```
+
+### Assign row names and column names to matrix
+
+```{r}
+rownames(mat) <- c("Good", "Neutral", "Evil")
+colnames(mat) <- c("Lawful", "Neutral", "Chaos")
+print(mat)
+```
+
+### Subsetting a matrix
+
+Define a simple matrix
+
+```{r}
+mat <- matrix(1:9, nrow=3, ncol=3, byrow=TRUE)
+```
+
+Subsetting the matrix
+
+```{r}
+mat[1:2, 2:3]
+```
+
+Subsetting the underlying vector
+
+```{r}
+mat[2:5]
+```
+
+### Extending a matrix
+
+```{r}
+mat <- cbind(mat, c(-1, 0, 1))
+mat <- rbind(mat, c(-4, -3, -2, -1))
+print(mat)
+```
+

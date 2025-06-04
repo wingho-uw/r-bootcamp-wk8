@@ -1,0 +1,88 @@
+---
+title: "week 8 exercises"
+author: "Wing-Ho Ko"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(palmerpenguins)
+library(dplyr)
+```
+
+
+### Exercise 1
+
+Given the following objects
+
+```{r}
+x <- c(1, 4, 2, 8, 5, 3)
+z <- list(c(1, 3, 7), c(2, 4), c(5, 1, 2))
+dframe <- data.frame(
+  x = c(1, 2, 3),
+  y = c(2, 4, 6),
+  z = c(-1, 0, 1)
+)
+```
+
+Predict (no code execution!) the results of the following subset operations. Specify both the **data structure** of the output and the **values** of the output
+
+1. x[x > 3]
+
+2. z[2:1]
+
+3. z[[2]][1]
+
+4. z[2][1]
+
+5. dframe[[2]]
+
+6. dframe[2:3, 1:2]
+
+
+### Exercise 2
+
+Consider 3 vectors `x`, `y`, and `z`:
+
+```{r}
+x <- c(7, -2, 3)
+y <- c(5, 6, 3)
+z <- c(-1, 8, 5)
+```
+
+1. Concatenate the 3 vectors `x`, `y`, and `z` into a single vector `vec`
+
+2. With `x`, `y`, and `z` as in part 1, create a list named `vec_list` containing the 3 vectors as its 3 elements
+
+3.  With `x`, `y`, and `z` as in part 1, create a dataframe named `df_xyz` in which vector becomes a column whose name is the name of the respective variable
+
+4.  With `x`, `y`, and `z` as in part 1, create a matrix `mat_xyz` in which vector becomes a **row** of the matrix
+
+5. Append the vector `x` as an extra row of the matrix below. The new matrix should override the name of the old matrix
+
+
+### Exercise 3
+
+Create a function that rescale the elements of vector on a linear scale from 0 to 1, where 0 is corresponds to the minimum value of the vector and 1 corresponds to the maximum value of the vector. Call your function `rescale01`
+
+
+### Exercise 4
+
+Write a function that, when given a named list of vectors, print out the indices and names of the vector that has at least one negative element. Call your function `print_neg`
+
+
+### Exercise 5
+
+Write a function that, given flipper length lower bound, flipper length upper bound, and species (which default to `NULL`, meaning all species are included), extract the penguin records that satisfy the constraints. Call your function `extract_penguins`
+
+
+### Exercise 6
+
+Write a function that, when given a numerical dataframe, rescale the elements of each column to a linear scale from 0 to 1, where 0 is corresponds to the minimum value of the column and 1 corresponds to the maximum value of the column. Call your function `rescale_df`
+
+Hint #1: remember that a dataframe is internally a list of vectors, and that a list of vectors can be coerced into a dataframe using as.data.frame
+
+Hint #2: you may want to reuse the function `rescale01` that you wrote in exercise #3

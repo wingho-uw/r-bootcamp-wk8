@@ -1,0 +1,206 @@
+---
+title: "Control flow"
+author: "Wing-Ho Ko"
+output: html_notebook
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(stringr)
+```
+
+
+## For loops
+
+A simple `for` loop
+
+```{r}
+total <- 0
+
+for (i in 1:500){
+  total <- total + i
+}
+
+print(total)
+```
+
+A for loop that maps a list to a vectors to a vector of sums
+
+```{r}
+list_of_vecs <- list(2, c(3, 4), c(2, 5, 6), 4)
+out = c()
+
+for (x in list_of_vecs){
+  out = c(out, sum(x))
+}
+
+print(out)
+```
+
+Loop through multiple vectors using `seq_along()`
+
+```{r}
+
+price <- c(18, 42, 51, 38, 25)
+quantity <- c(2, 3, 7, 6, 5)
+
+revenue <- 0
+
+for (i in seq_along(price)){
+  revenue <- revenue + price[[i]] * quantity[[i]]
+}
+
+print(revenue)
+```
+
+Using `unique()` to count occurrence:
+
+```{r}
+labels  <- c("a", "b", "c", "c", "a", "c", "b")
+
+unique_labels <- unique(labels)
+counts <- c()
+
+for (x in unique_labels){
+  counts[x] <- sum(labels == x)
+}
+
+print(counts)
+```
+
+## Conditional statements
+
+Use conditional statement in a `for` loop for filtering
+
+```{r}
+values <- c(1, 8, 5, 4, 7, 2)
+out = c()
+
+
+for (val in values){
+  if (val %% 2 == 0){
+    out = c(out, val)
+  }
+}
+
+print(out)
+```
+
+Including "else if" and "else" in a conditional statements
+
+```{r}
+
+# simulate the output of, e.g., list.files()
+
+filenames <- c("data_2024-06.csv", "data_2025-02.csv", "info.txt", "data_2024-11.csv", "out.zip")
+
+# loop through file names
+
+for (name in filenames){
+
+  ext = str_sub(name, -4, -1)
+
+  if (tolower(ext)==".csv"){
+    print(paste0("Data file '", name, "' found"))
+  } else if (tolower(ext)==".txt"){
+    print(paste0("Metadata file '", name, "' found"))
+  } else {
+    print(paste0("Additional file '", name, "' found"))
+  }
+}
+```
+
+Compound condition:
+
+```{r}
+values <- c(2, 3, NA, 7, -6, 5, NA)
+
+for (val in values){
+  if (!is.na(val) && (val < 0 || val > 5)){
+    print(val)
+  }
+}
+```
+
+Using `next` for filtering:
+
+```{r}
+values <- c(7, 2, NA, 5, 9, 8)
+
+out <- c()
+
+for (val in values){
+  
+  if (is.na(val) || val %% 2 == 1){
+    next
+  }
+  out = c(out, val)
+
+}
+
+print(out)
+
+```
+
+Using `break` to pick the first element
+
+```{r}
+values <- c(-7, -2, 4, 2, NA, -3)
+
+for (val in values){
+  if (val > 0){
+    break
+  }
+}
+
+print(val)
+```
+
+Put the previous example in a function
+
+```{r}
+first_positive <- function(x){
+  
+  for (val in x){
+    if (!is.na(val) && val > 0){
+      return(val)
+    }
+  }
+  return(NA)
+}
+
+first_positive(c(-4, -7, -1, NA, 5, 3, 4))
+```
+
+Return `NA` if the loop finishes without return
+
+```{r}
+first_positive(c(-4, -2, -7, -3))
+```
+
+## Vectorized conditionals and mapping
+
+Simulate the `abs()` function on vectors using `ifelse()`
+
+```{r}
+x <- c(5, -7, -9, 2, -4, NA, 8, 0)
+
+ifelse(x > 0, x, -x)
+```
+
+Apply the `seq()` function to a vector to generate a list of vectors
+
+```{r}
+lapply(c(2, 4, 5, 3), FUN=seq)
+```
+
+Apply both `mean()` and `sd()` function simultaneously on a list of vectors:
+
+```{r}
+values = list(c(2, 3), c(-5, 4, 2), c(7, 1, 0, -2))
+
+vapply(values, function(x){c(mean(x), sd(x))}, c(0, 0))
+```

@@ -1,0 +1,99 @@
+---
+title: "functions demo"
+author: "Wing-Ho Ko"
+output: html_notebook
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Writing functions
+
+### Basic example
+
+A simple function that takes an input vector and create a mean-subtracted version of it
+
+```{r}
+mean_subtracted <- function(x){
+  x - mean(x)
+}
+```
+
+Apply the function on a vector and assign the return to a new vector
+
+```{r}
+x <- c(1, 8, 5, 7, 9)
+y <- mean_subtracted(x)
+print(y)
+```
+
+### Explicit return
+
+Make a function return early (before all lines are executed) using `return()`
+
+```{r}
+standardize_bad <- function(x){
+  return(x - mean(x))
+  x / sd(x) # useless line that never got executed
+}
+```
+
+```{r}
+standardize_bad(c(-1, 0, 1))
+```
+
+### Scoping and copy-on-write behaviors
+
+A function cannot modify a global variable
+
+```{r}
+x <- 5  # global x
+y <- -1 # global y
+
+swap <- function(){
+
+  # a function that, alas, does nothing
+  
+  x <- 2  # local x
+  y <- 10 # local y
+}
+
+print(x)
+print(y)
+```
+
+### Function with default argument
+
+Define the p-norm of a vector (p = 2 is the usual Euclidean norm)
+
+```{r}
+vec_norm <- function(x, p = 2){
+  return(sum(x^p)^(1/p))
+}
+```
+
+Use the p-norm function with its default value
+
+```{r}
+vec_norm(c(3, 4))
+```
+
+Override the default value
+
+```{r}
+vec_norm(c(3, 4), 1)
+```
+
+### Customize the behavior of a generic function on a new class
+
+```{r}
+print.range <- function(x){
+  cat(paste0(min(x), " - ", max(x)))
+}
+
+x <- c(1, 4)
+class(x) <- c("range", class(x))
+
+print(x)
+```
