@@ -61,7 +61,11 @@ z <- c(-1, 8, 5)
 
 4.  With `x`, `y`, and `z` as in part 1, create a matrix `mat_xyz` in which vector becomes a **row** of the matrix
 
-5. Append the vector `x` as an extra row of the matrix below. The new matrix should override the name of the old matrix
+5. Append the vector `x` as an extra row of the matrix `mat` below. The new matrix should override the name of the old matrix
+
+```{r}
+mat <- matrix(1:9, nrow=3)
+```
 
 
 ### Exercise 3
@@ -76,7 +80,7 @@ Write a function that, when given a named list of vectors, print out the indices
 
 ### Exercise 5
 
-Write a function that, given flipper length lower bound, flipper length upper bound, and species (which default to `NULL`, meaning all species are included), extract the penguin records that satisfy the constraints. Call your function `extract_penguins`
+Write a function that takes 3 arguments, the first being the flipper length lower bound, the second being the flipper length upper bound, and the third being species (which default to NULL, meaning all species are included). The function should return the penguin records that satisfy all constraints supplied by the caller of the function. Call your function `extract_penguins`
 
 
 ### Exercise 6

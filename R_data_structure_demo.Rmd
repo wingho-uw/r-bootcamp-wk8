@@ -23,6 +23,8 @@ dframe = data.frame(
   y = c(2.5, 7.1, 3.4),
   z = c("here", "there", "where")
 )
+
+print(dframe)
 ```
 
 The class of a dataframe is `data.frame`
@@ -35,7 +37,7 @@ Once unclassed, the dataframe is exposed as a list
 
 ```{r}
 class(dframe) <- NULL
-str(dframe)
+print(dframe)
 ```
 
 The elements of the list are columns of the dataframe
@@ -105,7 +107,7 @@ y[2]
 Use [[]] to extract the inner object
 
 ```{r}
-x[[2]]
+y[[2]]
 ```
 
 ### Assigning new values to elements of vector and list
@@ -231,7 +233,19 @@ The `summary()` call on the aov object is dispatched to `summary.aov()`
 summary(pg_aov)
 ```
 
-A different summary is printed out if we remove the "aov" string from the class attribute
+The result of calling `summary.aov()` is identical to caliing `summary()`
+
+```{r}
+summary.aov(pg_aov)
+```
+
+We can force the object to be treated like an lm object by explicitly calling `summary.lm()`
+
+```{r}
+summary.lm(pg_aov)
+```
+
+The same summary is also printed out if we remove the "aov" string from the class attribute
 
 ```{r}
 pg_aov2 <- pg_aov
@@ -268,11 +282,6 @@ Subsetting named vector
 ```{r}
 x[c("a", "c")]
 ```
-
-```{r}
-x[]
-```
-
 
 Subsetting a named list
 
@@ -404,6 +413,7 @@ Define a simple matrix
 
 ```{r}
 mat <- matrix(1:9, nrow=3, ncol=3, byrow=TRUE)
+print(mat)
 ```
 
 Subsetting the matrix

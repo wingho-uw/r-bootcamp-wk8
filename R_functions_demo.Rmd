@@ -28,6 +28,12 @@ y <- mean_subtracted(x)
 print(y)
 ```
 
+Note that the global `x` is not modified
+
+```{r}
+print(x)
+```
+
 ### Explicit return
 
 Make a function return early (before all lines are executed) using `return()`
@@ -40,7 +46,20 @@ standardize_bad <- function(x){
 ```
 
 ```{r}
-standardize_bad(c(-1, 0, 1))
+standardize_bad(c(-2, 0, 2))
+```
+
+For the function to work properly, let it execute until the last line and returns the result
+
+```{r}
+standardize_good <- function(x){
+  x - mean(x)
+  x / sd(x)
+}
+```
+
+```{r}
+standardize_good(c(-2, 0, 2))
 ```
 
 ### Scoping and copy-on-write behaviors
@@ -69,17 +88,17 @@ Define the p-norm of a vector (p = 2 is the usual Euclidean norm)
 
 ```{r}
 vec_norm <- function(x, p = 2){
-  return(sum(x^p)^(1/p))
+  return(sum(abs(x)^p)^(1/p))
 }
 ```
 
-Use the p-norm function with its default value
+Use the p-norm function with its default value (p = 2 -> "Euclidean distance")
 
 ```{r}
 vec_norm(c(3, 4))
 ```
 
-Override the default value
+Override the default value (p = 1 -> "Manhattan distance")
 
 ```{r}
 vec_norm(c(3, 4), 1)
@@ -97,3 +116,4 @@ class(x) <- c("range", class(x))
 
 print(x)
 ```
+

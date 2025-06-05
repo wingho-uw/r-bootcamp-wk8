@@ -77,12 +77,12 @@ Use conditional statement in a `for` loop for filtering
 
 ```{r}
 values <- c(1, 8, 5, 4, 7, 2)
-out = c()
+out <- c()
 
 
 for (val in values){
   if (val %% 2 == 0){
-    out = c(out, val)
+    out <- c(out, val)
   }
 }
 
@@ -124,6 +124,8 @@ for (val in values){
   }
 }
 ```
+
+## Next and break
 
 Using `next` for filtering:
 
@@ -204,3 +206,4 @@ values = list(c(2, 3), c(-5, 4, 2), c(7, 1, 0, -2))
 
 vapply(values, function(x){c(mean(x), sd(x))}, c(0, 0))
 ```
+
